@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+session="$(tmux display -p '#S')"
+terminator -x tmux new-session -t "${session}" -s "${session} [copy]"
+
+exit 0

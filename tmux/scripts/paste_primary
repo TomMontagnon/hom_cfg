@@ -1,0 +1,4 @@
+#!/bin/bash
+tmux set-buffer -b primary_selection "$(xclip -o)"
+tmux paste-buffer -b primary_selection
+tmux delete-buffer -b primary_selection

@@ -1,0 +1,5 @@
+Host *
+    ServerAliveInterval 40
+
+Host POM4x4 POMbasic Adap2e01 Adap2e02 Ceol ceol pom4x4 pombasic adap2e01 adap2e02 robufast Robufast
+    ForwardX11 yes

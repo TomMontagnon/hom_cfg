@@ -1,0 +1,31 @@
+#!/bin/bash
+cd "$(dirname "${BASH_SOURCE[0]}")"
+source ../common.sh
+
+echo "TOOLS :"
+
+if [[ ! "$CONFIG_ONLY" ]] ; then
+  if [[ "$INSTALL_WITH_SUDO" ]] ; then
+    if ! which fd >/dev/null ; then
+      echo "fd_find"
+      sudo apt-get install -y fd-find
+      sudo ln -sfr /usr/bin/fdfind /usr/local/bin/fd
+    fi
+
+    if ! which rg >/dev/null ; then
+      echo "ripgrep"
+      sudo apt-get install -y ripgrep
+    fi
+    
+    if ! which batcat >/dev/null ; then
+      echo "bat"
+      sudo apt-get install -y bat
+      sudo ln -sfr /usr/bin/batcat /usr/local/bin/bat
+    fi
+
+    if ! which jq >/dev/null ; then
+      echo "jq"
+      sudo apt-get install -y jq
+    fi
+  fi
+fi

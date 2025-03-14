@@ -1,0 +1,22 @@
+#!/bin/bash
+cd "$(dirname "${BASH_SOURCE[0]}")"
+source ../common.sh
+echo "ROFI :"
+
+if [[ "$CONFIG_ONLY" ]] ; then
+  echo ">> config only"
+elif which rofi>/dev/null ; then
+  echo ">> already installed"
+else 
+  echo ">> installing rofi..."
+
+  if [[ "$INSTALL_WITH_SUDO" ]]; then
+    sudo apt-get install -y rofi
+    add_gnome_shortcut "Lancer Rofi" "rofi -show run" "<Super>x"
+  else
+    echo ">> need sudo..."
+  fi
+fi
+    add_gnome_shortcut "Lancer Rofi" "rofi -show run" "<Super>x"
+
+install_config config.rasi .config/rofi/config.rasi

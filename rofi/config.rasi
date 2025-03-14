@@ -1,0 +1,11 @@
+configuration {
+	modi: "window,drun,ssh,combi";
+	combi-modi: "run,drun";
+	matching: "fuzzy";
+}
+
+@theme "solarized"
+
+element-text {
+	text-color: white / 60%;
+}

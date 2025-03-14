@@ -1,0 +1,21 @@
+#!/bin/bash
+cd "$(dirname "${BASH_SOURCE[0]}")"
+source ../common.sh
+
+echo "TEST1 :"
+
+if [[ "$CONFIG_ONLY" ]] ; then
+  echo ">> config only"
+elif which >/dev/null ; then
+  echo ">> already installed"
+else 
+  echo ">> installing "
+  if [[ "$INSTALL_WITH_SUDO" ]]; then
+    echo "INSTALL TEST1"
+  else
+    echo ">> need sudo..."
+  fi
+fi
+
+
+install_config test1.config .config/test1.config

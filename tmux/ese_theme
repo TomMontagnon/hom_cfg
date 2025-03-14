@@ -1,0 +1,91 @@
+#!/bin/bash
+
+declare -A theme=(
+  [dark,window]='fg=#f7ba75,bg=#191919'
+  [dark,border]='fg=#807688,bg=#191919'
+  [dark,active_border]='fg=#807688,bg=#191919'
+  [dark,status_theme]='moon'
+  [dark,status_bg]='#3b2956'
+  [dark,status_bg_inactive]='#565263'
+  [dark,mode]='bg=#4d485c'
+  # [dark,cursor]='#f7ba75'
+  [dark,blink]='fg=#f7ba75,bg=#333333'
+  [dark,palette1]="#535353 #f24b2c #67b121 #e3bf1a #4e85ce #a868b3 #48dfa9 #b6b0aa"
+  [dark,palette2]="#7e7e7e #f8887b #93d76f #f6e16b #8caada #cfa2ca #a5f2d4 #fcfcfc"
+
+  [light,window]='fg=#000000,bg=#ffffff'
+  [light,border]='fg=#807688,bg=#ffffff'
+  [light,active_border]='fg=#807688,bg=#ffffff'
+  [light,status_theme]='dawn'
+  [light,status_bg]='#ebe5fb'
+  [light,status_bg_inactive]='#b4b0c0'
+  [light,mode]='bg=#c0bad4'
+  # [light,cursor]='#000000'
+  [light,blink]='fg=#000000,bg=#bababa'
+  [light,palette1]="#bababa #f13714 #58971c #bb7f04 #336bb6 #924f9e #28c78e #494949"
+  [light,palette2]="#8b8b8b #9c230d #3a6610 #8b620f #194b8e #5e3166 #0f704d #282828"
+)
+
+set_style() {
+  tmux set -g @ese_window_style ${theme[$1,window]}
+  tmux set -g @ese_blink_style ${theme[$1,blink]}
+  tmux set -g @ese_status_style_inactive "bg=${theme[$1,status_bg_inactive]}"
+
+  tmux set -g @mode_indicator_empty_prompt '#{}'
+  tmux set -g @mode_indicator_prefix_mode_style 'bg=#294980,fg=#ffffff'
+  tmux set -g @mode_indicator_copy_mode_style 'bg=#9d830b,fg=#ffffff'
+  tmux set -g @mode_indicator_sync_mode_style 'bg=#9b3c13,fg=#ffffff'
+  tmux set -g @mode_indicator_empty_mode_style 'bg=#574c6b,fg=#dbdbdb'
+
+  tmux set -g @rose_pine_variant "${theme[$1,status_theme]}"  # available: ['main', 'moon', 'dawn']
+  tmux set -g @rose_pine_host 'on' # Enables hostname in the status bar
+  tmux set -g @rose_pine_date_time '' # It accepts the date UNIX command format (man date for info)
+  tmux set -g @rose_pine_user 'on' # Turn on the username component in the statusbar
+  tmux set -g @rose_pine_directory 'off' # Turn on the current folder component in the status bar
+  tmux set -g @rose_pine_bar_bg_disable 'off' # Disables background color, for transparent terminal emulators
+  tmux set -g @rose_pine_bar_bg_disabled_color_option "${theme[$1,status_bg]}"
+  tmux set -g @rose_pine_disable_active_window_menu 'on' # Disables the menu that shows the active window on the left
+  tmux set -g @rose_pine_default_window_behavior 'on' # Forces tmux default window list behaviour
+  tmux set -g @rose_pine_show_current_program 'on' # Forces tmux to show the current running program as window name
+  tmux set -g @rose_pine_show_pane_directory 'on' # Forces tmux to show the current directory as window name
+  tmux set -g @rose_pine_status_left_prepend_section '#{tmux_mode_indicator}'
+
+  tmux run '~/.config/tmux/plugins/tmux/rose-pine.tmux'
+
+  tmux set -g window-style "${theme[$1,window]}"
+  tmux set -g pane-border-style "${theme[$1,border]}"
+  tmux set -g pane-active-border-style "${theme[$1,active_border]}"
+  tmux set -g mode-style "${theme[$1,mode]}"
+  # tmux set -g cursor-colour "${theme[$1,cursor]}"
+  tmux set -g pane-colours "${theme[$1,palette1]} ${theme[$1,palette2]}"
+
+  tmux set -g set-titles on
+  tmux set -g set-titles-string "[#S] #W"
+
+  tmux run '~/.config/tmux/plugins/tmux-mode-indicator/mode_indicator.tmux'
+
+  # change background of running (n)vim
+  tmux list-panes -aF "#{pane_id} #{pane_current_command}" \
+    | grep -E '\<(vi|n?vim)\>' \
+    | cut -d' ' -f1 \
+    | xargs -I% tmux send-keys -t % ESCAPE ":set bg=$1" ENTER
+}
+
+case $1 in
+  dark)
+    set_style dark
+    ;;
+  light)
+    set_style light
+    ;;
+  *)
+  case $(tmux show -Av window-style) in
+    ${theme[dark,window]}|'default')
+      set_style light
+      ;;
+    *)
+      set_style dark
+      ;;
+  esac
+  ;;
+esac

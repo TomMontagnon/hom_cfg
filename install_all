@@ -1,0 +1,23 @@
+#!/bin/bash
+cd "$(dirname "${BASH_SOURCE[0]}")"
+source common.sh
+
+install() {
+  local dir=$1
+  shift
+  #echo -e "\e[01;34mInstall ${dir}\e[00m"
+  "${dir}/install" -b "$BACKUP_DIR" "${ARGS[@]}"
+}
+
+install alacritty
+install fonts
+install fzf
+install git
+install lazygit
+#install python
+install rofi
+#install tmux
+install tools
+install zellij
+install zsh
+#install test1

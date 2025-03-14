@@ -1,0 +1,126 @@
+# uncomment to profile startup time
+# zmodload zsh/zprof
+
+# The following lines were added by compinstall
+zstyle :compinstall filename '/home/tom/.zshrc'
+
+# D'autres commande de completion sont dans un répertoire
+fpath=(~/.zsh/completion $fpath)
+
+autoload -Uz compinit
+if [ "$(find ~/.zcompdump -mtime -1 2>/dev/null)" ] ; then
+    compinit -C
+else
+    compinit
+fi
+
+# End of lines added by compinstall
+
+HISTFILE=~/.zsh_history
+HISTSIZE=100000
+SAVEHIST=100000
+
+zstyle ':completion:*' completer _expand _complete _ignored
+zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} r:|[._-]=** r:|=**'
+zstyle ':completion:*:rm:*' ignore-line yes # avoid including the same file several times
+zstyle ':completion:*:mv:*' ignore-line yes
+zstyle ':completion:*:cp:*' ignore-line yes
+
+setopt auto_pushd            # cd - (stack)
+setopt pushd_ignore_dups     # don't push multiple copies of the same directory onto the dir stack.
+setopt pushd_silent          # do not print the directory stack after pushd or popd.
+setopt pushd_to_home         # have pushd with no arguments act like `pushd $HOME'.
+setopt prompt_subst          # enable some expansions in prompt
+setopt extended_glob         # treat the `#', `~' and `^' characters as part of patterns
+setopt auto_list             # list choices on  an ambiguous completion
+
+setopt append_history        # parallel zsh share new entries from history
+setopt share_history         # import new commands from the history file
+setopt inc_append_history    # Append history immediately
+setopt bang_hist             # perform textual history expansion (!!, !123, !git)
+setopt hist_fcntl_lock       # lock on history file done with fctnl syscall
+setopt hist_find_no_dups     # no duplicates (even not contiguous) when searching for history entries 
+setopt hist_ignore_space     # ignore command line which start with space in the history file
+setopt hist_reduce_blanks    # remove useless spaces in the history file
+
+unsetopt beep
+unsetopt complete_in_word    # if unset, the cursor is set to the end of the word
+# setopt always_to_end         # move the cursor to the end of the word after a completion
+
+#################### Keybindings ######################
+
+declare -A keycodes
+keycodes[ctrl_r]='^R'
+keycodes[shift_up]='^[[1;2A'
+keycodes[shift_dn]='^[[1;2B'
+keycodes[shift_tab]='^[[1;2B' #TODO ERROR ???
+
+bindkey -e
+bindkey '^U' backward-kill-line
+
+bindkey ${keycodes[shift_tab]} reverse-menu-complete
+bindkey ${keycodes[ctrl_r]}    history-incremental-pattern-search-backward
+bindkey ${keycodes[shift_up]}  history-beginning-search-backward
+bindkey ${keycodes[shift_dn]}  history-beginning-search-forward
+
+unset keycodes
+
+#######################################################
+
+
+# Corrige les erreurs de syntaxe lors de l'écriture d'une commande
+setopt AUTO_MENU
+zmodload zsh/complist
+zstyle ':completion:*' menu select
+
+
+
+zstyle ':completion:*:*:kill:*:processes' list-colors "=(#b) #([0-9]#)*=36=31"
+
+eval "$(starship init zsh)"
+
+export_nvidia() {
+  export __NV_PRIME_RENDER_OFFLOAD=1
+  export __GLX_VENDOR_LIBRARY_NAME=nvidia
+  export NVIDIA_DRIVER_CAPABILITIES=all
+}
+
+export_cuda() {
+  export CUDA_HOME="/usr/local/cuda"
+  export PATH="$PATH:$CUDA_HOME/bin"
+}
+
+export_vdn() { export PATH="$PATH:$HOME/share/vdn/bin" ; }
+export_arm() { export PATH="$PATH:/opt/gcc-arm/bin" ; }
+export_rust() { export PATH="$HOME/.cargo/bin:$PATH" }
+
+ulimit -c unlimited
+export TRACE_CORE=1
+export PATH="$HOME/.local/bin:$PATH"
+export LESS=-FRSx2
+[[ -z "$XDG_CONFIG_HOME" ]] && export XDG_CONFIG_HOME="$HOME/.config"
+
+#######################################################
+#################### Extra configuration ##############
+__extra_config_dir=~/.zsh/cfg
+if [[ -d ${__extra_config_dir} ]]; then
+	files=$(find ${__extra_config_dir} -follow -type f)
+	for file in "${=files}"; source "${file}"
+fi
+unset __extra_config_dir
+#######################################################
+
+# load plugins
+#source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
+
+# execute special command
+if [[ -n "$RUN_CMD" ]]; then
+	eval "$RUN_CMD"
+	unset RUN_CMD
+fi
+
+# uncomment to profile startup time
+# zprof
+

@@ -1,0 +1,57 @@
+#!/bin/bash
+cd "$(dirname "${BASH_SOURCE[0]}")"
+source ../common.sh
+
+
+echo "TMUX :"
+
+make_install_tmux() {
+  src_dir="$HOME/share"
+
+  mkdir -p "$src_dir"
+  pushd $src_dir >/dev/null
+
+  sudo apt-get install -y \
+    libncurses-dev bison gcc make libevent-dev ncurses-dev build-essential bison pkg-config automake
+
+  if [[ ! -d "./tmux" ]] ; then
+    git clone --recursive --depth 1 https://github.com/tmux/tmux.git
+  else
+    git -C tmux pull
+  fi
+
+  pushd tmux >/dev/null
+  sh autogen.sh
+  ./configure
+  make -j14
+  sudo make install
+
+  popd >/dev/null
+  popd >/dev/null
+}
+
+
+
+if [[ "$CONFIG_ONLY" ]] ; then
+  echo ">> config only"
+elif which tmux>/dev/null ; then
+  echo ">> already installed"
+else 
+  echo ">> installing "
+  make_install_tmux
+fi
+
+
+install_config tmux.conf .config/tmux/tmux.conf
+install_config ese_theme .config/tmux/ese_theme
+install_config scripts .config/tmux/scripts
+
+TPM_DIR="${HOME}/.config/tmux/plugins/tpm"
+if [[ ! -d "${TPM_DIR}" ]] ; then
+  git clone 'https://github.com/tmux-plugins/tpm' "${HOME}/.config/tmux/plugins/tpm"
+  if [[ -z "${TMUX}" ]] ; then
+    tmux new "${TPM_DIR}/bindings/install_plugins"
+  else
+    "${TPM_DIR}/bindings/install_plugins"
+  fi
+fi

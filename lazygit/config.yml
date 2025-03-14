@@ -1,0 +1,14 @@
+gui:
+  nerdFontsVersion: "3"
+  theme:
+    selectedLineBgColor:
+      # - '#000000'
+      - underline
+
+git:
+  log:
+    showGraph: always
+    showWholeGraph: true
+  paging:
+    colorArg: always
+    pager: delta --paging=never

@@ -1,0 +1,29 @@
+#!/bin/bash
+cd "$(dirname "${BASH_SOURCE[0]}")"
+source ../common.sh
+
+echo "FONTS : "
+repo="ryanoasis/nerd-fonts"
+latest=$(curl -s "https://api.github.com/repos/${repo}/releases/latest"|jq -r '.tag_name')
+nerdfonts_url="https://github.com/${repo}/releases/download/${latest}"
+fonts_dir="$HOME/.local/share/fonts"
+
+mkdir -p "$fonts_dir"
+
+download() {
+  name=$1
+  dest_dir="$fonts_dir/$name"
+
+  [[ -d "$dest_dir" ]] && return
+
+  echo "  download fonts: ${name}"
+  pushd /tmp >/dev/null
+  wget -q "${nerdfonts_url}/${name}.tar.xz"
+  mkdir -p "$dest_dir"
+  tar -C "$dest_dir" -xf "${name}.tar.xz"
+  popd >/dev/null
+}
+
+download Hack
+
+fc-cache

@@ -1,0 +1,32 @@
+#!/bin/bash
+cd "$(dirname "${BASH_SOURCE[0]}")"
+source ../common.sh
+
+
+echo "ALACRITTY :"
+if [[ "$CONFIG_ONLY" ]] ; then
+  echo ">> config only"
+elif which alacritty >/dev/null ; then
+  echo ">> already installed"
+else 
+  echo ">> installing alacritty"
+  if ! which cargo >/dev/null ; then
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+  fi
+  cargo install alacritty
+  
+  
+  wget https://raw.githubusercontent.com/alacritty/alacritty/master/extra/alacritty.info
+  tic -xe alacritty,alacritty-direct alacritty.info
+  rm alacritty.info
+
+  gsettings set org.gnome.desktop.default-applications.terminal exec 'alacritty'
+  gsettings set org.gnome.desktop.default-applications.terminal exec-arg ''
+
+  install_config alacritty.desktop .local/share/applications/alacritty.desktop
+
+  mkdir -p .local/share/icons/
+  wget https://github.com/alacritty/alacritty/raw/master/extra/logo/alacritty-term.svg -O ~/.local/share/icons/alacritty.svg
+fi
+
+install_config alacritty.toml .config/alacritty/alacritty.toml

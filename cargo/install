@@ -1,0 +1,15 @@
+#!/bin/bash
+cd "$(dirname "${BASH_SOURCE[0]}")"
+source ../common.sh
+
+
+if [[ "$CONFIG_ONLY" ]] ; then
+  echo ">> config only"
+elif which cargo >/dev/null ; then
+  echo ">> already installed"
+else 
+  echo ">> installing cargo"
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+fi
+
+install_config config.toml .cargo/config.toml

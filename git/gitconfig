@@ -1,0 +1,72 @@
+[user]
+  name = Tom Montagnon
+  email = tom.montagnon@protonmail.com
+
+[push]
+  default = simple
+
+[core]
+  autocrlf = input
+  pager = delta
+
+[alias]
+  sm  = submodule
+  co  = checkout
+  ss  = status -s
+  cm = commit -m
+  lfu = ls-files -u
+  lo  = log --oneline
+  graph = log --graph --all --date-order --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) %C(yellow)(%cd)%C(reset) %C(normal)%s%C(reset) %C(8)- %an%C(reset)%C(bold yellow)%d%C(reset)' --branches
+  pr  = pull -r
+  pra = pull -r --autostash
+  sw  = switch
+  cam = commit -am
+  c = commit
+  pf = push --force-with-lease
+
+[credential]
+  helper = store
+
+[diff]
+  tool = meld
+
+[difftool]
+  prompt = false
+
+[difftool "meld"]
+  cmd = meld "$LOCAL" "$REMOTE"
+
+[init]
+  defaultBranch = main
+
+[pull]
+  ff = only
+
+[interactive]
+  diffFilter = delta --color-only --features=interactive
+
+[delta]
+  navigate = true
+  features = decorations
+
+[delta "interactive"]
+  keep-plus-minus-markers = false
+
+[delta "decorations"]
+  commit-decoration-style = blue ol
+  commit-style = raw
+  file-style = omit
+  hunk-header-decoration-style = blue box
+  hunk-header-file-style = red
+  hunk-header-style = file line-number syntax
+
+[include]
+  path = ~/.config/local_gitconfig
+
+[filter "lfs"]
+  required = true
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+
+# vim:ft=gitconfig:wrap

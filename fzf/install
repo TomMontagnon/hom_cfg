@@ -1,0 +1,38 @@
+#!/bin/bash
+cd "$(dirname "${BASH_SOURCE[0]}")"
+source ../common.sh
+
+
+#install_fzf() {
+#  mkdir -p $HOME/.config/clangd/ # TODO utile ?
+#  if [[ "$INSTALL_WITH_SUDO" ]] ; then
+#    sudo_cmd='sudo'
+#    install_dir=/opt/fzf
+#    bin_link="/usr/local/bin/fzf"
+#  else
+#    sudo_cmd=''
+#    install_dir="${HOME}/share/fzf"
+#    bin_link="${HOME}/.local/bin/fzf"
+#    mkdir -p "${install_dir}"
+#    mkdir -p "${HOME}/.local/bin"
+#  fi
+#
+#  ${sudo_cmd} git clone --depth 1 https://github.com/junegunn/fzf.git "${install_dir}"
+#  ${sudo_cmd} "${install_dir}/install" --bin
+#  ${sudo_cmd} ln -sfr "${install_dir}/bin/fzf" "${bin_link}"
+#}
+
+echo "FZF :"
+if [[ "$CONFIG_ONLY" ]] ; then
+  echo ">> config only"
+elif which fzf >/dev/null ; then
+  echo ">> already installed"
+else
+  echo ">> installing fzf"
+  if [[ "$INSTALL_WITH_SUDO" ]]; then
+    sudo apt install fzf
+  else
+    echo ">> need sudo..."
+  fi
+fi
+

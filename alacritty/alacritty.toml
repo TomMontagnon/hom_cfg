@@ -1,0 +1,22 @@
+[window]
+dimensions = { columns = 80, lines = 24 }
+position = "None"
+padding = { x = 0, y = 0 }
+dynamic_padding = true  # spread padding evenly arround terminal content
+#decorations = "None"
+resize_increments = false
+
+[scrolling]
+history = 0  # disabled
+
+[font]
+normal = { family = "Hack Nerd Font", style = "Regular" }
+size = 11.0
+# offset = { x = 0, y = -3 } 
+# glyph_offset = { x = 0, y = -1 }
+
+[env]
+TERM = "alacritty"  # tmux use it to enable true color
+
+[shell]
+program = "zellij"
