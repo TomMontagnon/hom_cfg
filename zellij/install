@@ -1,4 +1,5 @@
 #!/bin/bash
+#dep : cargo
 cd "$(dirname "${BASH_SOURCE[0]}")"
 source ../common.sh
 
@@ -9,12 +10,8 @@ if [[ "$CONFIG_ONLY" ]] ; then
 elif which zellij >/dev/null ; then
   echo ">> already installed"
 else 
-  echo ">> installing zellij"
-  if ! which cargo >/dev/null ; then
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-  fi
+  echo ">> installing..."
   cargo install --locked zellij
-  add_gnome_shortcut "Launch Zellij with layout" "$HOME/.config/zellij/launch_layout.bash" "<Ctrl><Alt>y" true
 fi
 
 add_gnome_shortcut "Launch Zellij with layout" "$HOME/.config/zellij/launch_layout.bash" "<Ctrl><Alt>y" true
@@ -22,3 +19,10 @@ add_gnome_shortcut "Launch Zellij with layout" "$HOME/.config/zellij/launch_layo
 install_config launch_layout.bash .config/zellij/launch_layout.bash
 install_config layouts.d .config/zellij/layouts.d
 install_config config.kdl .config/zellij/config.kdl
+
+zsh_config_dir='.zsh'
+zellij_completion_file="${zsh_config_dir}/completion/_zellij"
+if which zsh >/dev/null && [[ ! -r "${zellij_completion_file}" ]] ; then
+  # TODO verif don't need mkdir
+  zellij setup --generate-completion zsh >"${HOME}/${zellij_completion_file}"
+fi

@@ -1,6 +1,6 @@
 layout {
     pane_template name="venv_python" {
-	cwd "/home/tom/Projets/soil_model"
+	cwd "/home/tom/Projets/soil_model_simulation"
 	command "zsh"
 	args "-c" "source venv/bin/activate && exec zsh"
     }
@@ -10,7 +10,7 @@ layout {
     }
     pane split_direction="vertical" {
 	pane {
-		cwd "/home/tom/Projets/soil_model"
+		cwd "/home/tom/Projets/soil_model_simulation"
 		command "vi"
 	}
 	pane split_direction="horizontal" {

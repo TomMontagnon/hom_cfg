@@ -3,7 +3,13 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 source ../common.sh
 
 echo "SSH :"
+if [[ "$CONFIG_ONLY" ]] ; then
+  echo ">> config only"
+elif which ssh >/dev/null ; then
+  echo ">> already installed"
+else 
+  echo ">> should be installed by default"
+fi
 
 mkdir -m700 -p $HOME/.ssh
-
 install_config config .ssh/config

@@ -1,0 +1,23 @@
+#!/bin/bash
+#dep : zsh
+cd "$(dirname "${BASH_SOURCE[0]}")"
+source ../common.sh
+
+echo "STARSHIP :"
+
+zsh_config_dir='.zsh'
+
+mkdir -p "$HOME/${zsh_config_dir}/completion"
+
+install_config starship.toml .config/starship.toml
+
+
+if [[ "$CONFIG_ONLY" ]] ; then
+  echo ">> config only"
+elif which starship>/dev/null ; then
+  echo ">> already installed"
+else 
+  echo ">> installing..."
+  curl -sS https://starship.rs/install.sh | sh
+fi
+

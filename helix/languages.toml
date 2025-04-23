@@ -1,0 +1,20 @@
+# Doubled Commented sections are default
+
+[[language]]
+name = "python"
+language-servers = ["pylsp"]
+
+[language-server.pylsp]
+## command = "pylsp"
+
+[language-server.pylsp.config.pylsp.plugins]
+jedi_completion.enabled = true
+jedi_hover.enabled = true
+jedi_signature_help.enabled = true
+jedi_references.enabled = true
+jedi_definition.enabled = true
+jedi_rename.enabled = true
+
+## ruff.enabled = false
+ruff.config = "$HOME/.config/ruff/ruff.toml"
+

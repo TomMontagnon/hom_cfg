@@ -1,0 +1,20 @@
+line-length = 88
+target-version = "py311"
+# select = ["E", "F", "B", "I", "D"]
+select = ["ALL"]
+ignore = ["T20", # flake8-print
+          "D", # pydocstyle
+          "COM812", # missing-trailing-comma
+          "I001", # unsorted-imports
+          "ERA001", # commented-out-code
+          "INP001", # implicit-namespace-package
+          ]
+
+[lint.pydocstyle]
+convention = "google"
+
+[format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"
+

@@ -1,27 +1,9 @@
 layout {
     cwd "$HOME/Projets/tirrex_workspace/demos/soil_model_tirrex_configs/adap2e"
-    pane_template name="tirrex_bash" {
-	command "bash"
-	args "-c" "NAME=${ZELLIJ_SESSION_NAME}_tirrex-bash_$RANDOM; docker compose run --name \"$NAME\" --rm --entrypoint bash bash -c \"echo \\\"cd demos/soil_model_tirrex_configs/adap2e\\\">/tmp/a && /ros_entrypoint.sh bash --init-file /tmp/a\"; docker rm -f $NAME"
-    }
-
-    pane size=1 borderless=true {
-        plugin location="tab-bar"
-    }
-    pane split_direction="vertical" {
 	pane {
-		cwd "/home/tom/Projets/tirrex_workspace/demos/soil_model_tirrex_configs"
-		command "vi"
+		command "zsh"
+		args "-i" "-c" "docker_run"
 	}
-	pane split_direction="horizontal" {
-		tirrex_bash
-		tirrex_bash
-		tirrex_bash
-	}
-    }
-    pane size=1 borderless=true {
-        plugin location="status-bar"
-    }
 
     floating_panes {
         pane {
@@ -29,5 +11,4 @@ layout {
 	    args "compose" "up" "rviz"
 	}
     }
-
 }

@@ -2,13 +2,13 @@
 cd "$(dirname "${BASH_SOURCE[0]}")"
 source ../common.sh
 
-
+echo "CARGO :"
 if [[ "$CONFIG_ONLY" ]] ; then
   echo ">> config only"
 elif which cargo >/dev/null ; then
   echo ">> already installed"
 else 
-  echo ">> installing cargo"
+  echo ">> installing..."
   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 fi
 

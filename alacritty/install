@@ -1,4 +1,5 @@
 #!/bin/bash
+#dep : cargo
 cd "$(dirname "${BASH_SOURCE[0]}")"
 source ../common.sh
 
@@ -9,10 +10,7 @@ if [[ "$CONFIG_ONLY" ]] ; then
 elif which alacritty >/dev/null ; then
   echo ">> already installed"
 else 
-  echo ">> installing alacritty"
-  if ! which cargo >/dev/null ; then
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-  fi
+  echo ">> installing..."
   cargo install alacritty
   
   

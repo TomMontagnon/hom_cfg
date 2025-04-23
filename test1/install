@@ -1,4 +1,5 @@
 #!/bin/bash
+# dep : 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 source ../common.sh
 
@@ -9,12 +10,7 @@ if [[ "$CONFIG_ONLY" ]] ; then
 elif which >/dev/null ; then
   echo ">> already installed"
 else 
-  echo ">> installing "
-  if [[ "$INSTALL_WITH_SUDO" ]]; then
-    echo "INSTALL TEST1"
-  else
-    echo ">> need sudo..."
-  fi
+  echo ">> installing... "
 fi
 
 

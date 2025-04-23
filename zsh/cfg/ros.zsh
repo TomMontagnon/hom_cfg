@@ -45,3 +45,4 @@ source_tirrex() {
 
 alias ccd="colcon_cd"
 alias ccb="colcon build --symlink-install"
+alias src_ros="source /opt/ros/jazzy/setup.zsh; export ROS_DOMAIN_ID=4; export ROS_AUTOMATIC_DISCOVERY_RANGE=LOCALHOST"

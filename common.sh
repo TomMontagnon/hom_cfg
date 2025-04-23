@@ -5,7 +5,6 @@ Syntax: $0 [OPTION]...
 
   -b, --backup-dir=PATH   use PATH as backup directory instead of generating one
   -h, --help              print this help
-  -s, --sudo              specify that sudo is available and use it to install programs
   -c, --config-only       only install config files, no programs
 EOF
   exit 0
@@ -134,19 +133,17 @@ generate_backup_dir() {
   echo "backup dir: $BACKUP_DIR"
 }
 
-options=$(getopt -o hb:cs -l help,backup-dir:,sudo,config-only -n "$0" -- "$@")
+options=$(getopt -o hb:c -l help,backup-dir:,config-only -n "$0" -- "$@")
 eval set -- "$options"
 
 ARGS=("$@")
 BACKUP_DIR=
-INSTALL_WITH_SUDO=
 CONFIG_ONLY=
 
 while true ; do
   case "$1" in
-    -h ) print_help ;;
+    -h | --help ) print_help ;;
     -b | --backup-dir ) BACKUP_DIR=$2 ; shift 2 ;;
-    -s | --sudo ) INSTALL_WITH_SUDO=1 ; shift ;;
     -c | --config-only ) CONFIG_ONLY=1 ; shift ;;
     -- ) shift ; break ;;
     * ) echo >&2 "Error: Unknown option '$1'." ; exit 1 ;;

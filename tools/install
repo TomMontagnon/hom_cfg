@@ -1,31 +1,67 @@
 #!/bin/bash
+#dep : cargo
 cd "$(dirname "${BASH_SOURCE[0]}")"
 source ../common.sh
 
 echo "TOOLS :"
-
 if [[ ! "$CONFIG_ONLY" ]] ; then
-  if [[ "$INSTALL_WITH_SUDO" ]] ; then
-    if ! which fd >/dev/null ; then
-      echo "fd_find"
-      sudo apt-get install -y fd-find
-      sudo ln -sfr /usr/bin/fdfind /usr/local/bin/fd
-    fi
+  if ! which fd >/dev/null ; then
+    echo "installing fd_find"
+    cargo install fd-find
+  fi
 
-    if ! which rg >/dev/null ; then
-      echo "ripgrep"
-      sudo apt-get install -y ripgrep
-    fi
-    
-    if ! which batcat >/dev/null ; then
-      echo "bat"
-      sudo apt-get install -y bat
-      sudo ln -sfr /usr/bin/batcat /usr/local/bin/bat
-    fi
+  if ! which rg >/dev/null ; then
+    echo "installing ripgrep"
+    cargo install ripgrep
+  fi
+  
+  if ! which bat >/dev/null ; then
+    echo "installing bat"
+    cargo install bat
+  fi
 
-    if ! which jq >/dev/null ; then
-      echo "jq"
-      sudo apt-get install -y jq
-    fi
+  if ! which sd >/dev/null ; then
+    echo "installing sd"
+    cargo install sd
+  fi
+
+  if ! which exa >/dev/null ; then
+    echo "installing exa"
+    cargo install exa
+  fi
+  
+  if ! which jaq >/dev/null ; then
+    echo "installing jaq"
+    cargo install jaq
+  fi
+
+  if ! which dua >/dev/null ; then
+    echo "installing dua"
+    cargo install dua-cli
+  fi
+
+  if ! which bandwhich >/dev/null ; then
+    echo "installing bandwhich"
+    cargo install bandwhich
+    #making it visible from sudoers
+    sudo ln -s ~/.cargo/bin/bandwhich /usr/local/bin/bandwhich 
+  fi
+
+
+  if ! which hyperfine >/dev/null ; then
+    echo "installing hyperfine"
+    cargo install hyperfine
+  fi
+
+
+  if ! which pastel >/dev/null ; then
+    echo "installing pastel"
+    cargo install pastel
+  fi
+
+
+  if ! which xsv >/dev/null ; then
+    echo "installing xsv"
+    cargo install xsv
   fi
 fi

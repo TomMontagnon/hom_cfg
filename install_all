@@ -2,22 +2,70 @@
 cd "$(dirname "${BASH_SOURCE[0]}")"
 source common.sh
 
-install() {
-  local dir=$1
-  shift
-  #echo -e "\e[01;34mInstall ${dir}\e[00m"
-  "${dir}/install" -b "$BACKUP_DIR" "${ARGS[@]}"
+
+set -e
+
+ignore_list=(".git" "test1" "tmux")
+
+is_ignored() {
+    local target="$1"
+    for ignore in "${ignore_list[@]}"; do
+        if [[ "$target" == "$ignore" ]]; then
+            return 0
+        fi
+    done
+    return 1
 }
 
-install alacritty
-install fonts
-install fzf
-install git
-install lazygit
-#install python
-install rofi
-#install tmux
-install tools
-install zellij
-install zsh
-#install test1
+declare -A dependencies
+declare -A visited
+install_order=()
+
+for dir in * ; do
+    is_ignored "$dir" && continue
+    
+    [ -f "$dir/install" ] || continue
+    line=$(grep '^#dep : ' "$dir/install" || true)
+    deps=()
+    if [[ -n "$line" ]]; then
+        deps=(${line#"#dep : "})
+    fi
+    dependencies["$dir"]="${deps[*]}"
+    echo "dir : $dir | dep = ${deps[*]}"
+done
+
+topo_sort() {
+    local dir="$1"
+
+    if [[ "${visited[$dir]}" == "permanent" ]]; then
+        return
+    elif [[ "${visited[$dir]}" == "temporary" ]]; then
+        echo "Cycle détecté impliquant $dir" >&2
+        exit 1
+    fi
+
+    visited[$dir]="temporary"
+
+    for dep in ${dependencies[$dir]}; do
+        echo "$dep | ${dependencies[$dep]} |" ${dependencies["cargo"]}
+        if [[ ! -v dependencies[$dep] ]]; then
+            echo "Dépendance inconnue : $dep requise par $dir" >&2
+            exit 1
+        fi
+        topo_sort "$dep"
+    done
+
+    visited[$dir]="permanent"
+    install_order+=("$dir")
+}
+
+# Trier tous les scripts en respectant les dépendances
+for dir in "${!dependencies[@]}"; do
+    topo_sort "$dir"
+done
+
+# Exécuter les scripts dans le bon ordre
+for dir in "${install_order[@]}"; do
+    echo "Installation de $dir..."
+    #(cd "$dir" && chmod +x install && ./install -b "$BACKUP_DIR" "${ARGS[@]}")
+done

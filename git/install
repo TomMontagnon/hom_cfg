@@ -16,12 +16,8 @@ if [[ "$CONFIG_ONLY" ]] ; then
 elif which git >/dev/null ; then
   echo ">> already installed"
 else 
-  echo ">> installing git"
-  if [[ "$INSTALL_WITH_SUDO" ]]; then
-    sudo apt install git
-  else
-    echo ">> need sudo..."
-  fi
+  echo ">> installing... (SUDO)"
+  sudo apt-get install -y git
 fi
 
 install_config gitconfig .gitconfig

@@ -1,0 +1,17 @@
+#!/bin/bash
+cd "$(dirname "${BASH_SOURCE[0]}")"
+source ../common.sh
+
+echo "HELIX :"
+if [[ "$CONFIG_ONLY" ]] ; then
+  echo ">> config only"
+elif which hx >/dev/null ; then
+  echo ">> already installed"
+else 
+  echo ">> installing... (SUDO)"
+  sudo add-apt-repository ppa:maveonair/helix-editor
+  sudo apt-get install -y helix
+fi
+
+install_config config.toml .config/helix/config.toml
+install_config languages.toml .config/helix/languages.toml

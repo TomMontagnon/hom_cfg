@@ -24,15 +24,11 @@ source ../common.sh
 
 echo "FZF :"
 if [[ "$CONFIG_ONLY" ]] ; then
-  echo ">> config only"
+  echo ">> no config to install"
 elif which fzf >/dev/null ; then
   echo ">> already installed"
 else
-  echo ">> installing fzf"
-  if [[ "$INSTALL_WITH_SUDO" ]]; then
-    sudo apt install fzf
-  else
-    echo ">> need sudo..."
-  fi
+  echo ">> installing... (SUDO)"
+  sudo apt-get install -y fzf
 fi
 
