@@ -2,11 +2,18 @@
 cd "$(dirname "${BASH_SOURCE[0]}")"
 source ../common.sh
 
-sudo apt-get install -y pipx
+echo "PYLSP :"
 
-pipx install python-lsp-server
-pipx inject python-lsp-server python-lsp-ruff
+if [[ "$CONFIG_ONLY" ]] ; then
+  echo ">> config only"
+elif which pylsp>/dev/null ; then
+  echo ">> already installed"
+else 
+  echo ">> installing... (SUDO)"
+  sudo apt-get install -y pipx
+  pipx install python-lsp-server
+  pipx inject python-lsp-server python-lsp-ruff
+fi
 
-ln -s ~/.local/share/pipx/venvs/python-lsp-server/bin/ruff ~/.local/bin/ruff
-
+ln -sf ~/.local/share/pipx/venvs/python-lsp-server/bin/ruff ~/.local/bin/ruff
 install_config ruff.toml .config/ruff/ruff.toml

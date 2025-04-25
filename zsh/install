@@ -10,10 +10,6 @@ mkdir -p "$HOME/${zsh_config_dir}/completion"
 
 #TODO Try isntall config after
 
-install_config zshrc .zshrc
-install_config zshenv .zshenv
-install_config cfg "${zsh_config_dir}/cfg"
-
 
 if [[ "$CONFIG_ONLY" ]] ; then
   echo ">> config only"
@@ -24,4 +20,8 @@ else
   sudo apt-get install -y zsh zsh-syntax-highlighting
 fi
 
+
+install_config zshrc .zshrc
+install_config zshenv .zshenv
+install_config cfg "${zsh_config_dir}/cfg"
 

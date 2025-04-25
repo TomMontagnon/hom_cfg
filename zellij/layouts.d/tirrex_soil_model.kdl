@@ -7,8 +7,8 @@ layout {
 
     floating_panes {
         pane {
-	    command "docker"
-	    args "compose" "up" "rviz"
+	    command "ls"
+	    //args "compose" "up" "rviz"
 	}
     }
 }
