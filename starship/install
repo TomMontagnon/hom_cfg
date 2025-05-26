@@ -6,7 +6,7 @@ source ../common.sh
 echo "STARSHIP :"
 if [[ "$CONFIG_ONLY" ]] ; then
   echo ">> config only" ; [[ "$DRY_RUN" ]] && exit 0
-elif which starship>/dev/null ; then
+elif command -v starship>/dev/null ; then
   echo ">> already installed" ; [[ "$DRY_RUN" ]] && exit 0
 else 
   echo ">> installing..." ; [[ "$DRY_RUN" ]] && exit 0

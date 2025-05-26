@@ -25,7 +25,7 @@ source ../common.sh
 echo "FZF :"
 if [[ "$CONFIG_ONLY" ]] ; then
   echo ">> no config to install" ; [[ "$DRY_RUN" ]] && exit 0
-elif which fzf >/dev/null ; then
+elif command -v fzf >/dev/null ; then
   echo ">> already installed" ; [[ "$DRY_RUN" ]] && exit 0
 else
   echo ">> installing... (SUDO)" ; [[ "$DRY_RUN" ]] && exit 0

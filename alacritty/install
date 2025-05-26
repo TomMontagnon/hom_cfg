@@ -8,7 +8,7 @@ source ../common.sh
 echo "ALACRITTY :"
 if [[ "$CONFIG_ONLY" ]] ; then
   echo ">> config only" ; [[ "$DRY_RUN" ]] && exit 0
-elif which alacritty >/dev/null ; then
+elif command -v alacritty >/dev/null ; then
   echo ">> already installed" ; [[ "$DRY_RUN" ]] && exit 0
 else 
   echo ">> installing..." ; [[ "$DRY_RUN" ]] && exit 0

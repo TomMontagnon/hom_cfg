@@ -7,7 +7,7 @@ source ../common.sh
 echo "ZELLIJ :"
 if [[ "$CONFIG_ONLY" ]] ; then
   echo ">> config only" ; [[ "$DRY_RUN" ]] && exit 0
-elif which zellij >/dev/null ; then
+elif command -v zellij >/dev/null ; then
   echo ">> already installed" ; [[ "$DRY_RUN" ]] && exit 0
 else 
   echo ">> installing..." ; [[ "$DRY_RUN" ]] && exit 0
@@ -22,7 +22,7 @@ install_config config.kdl .config/zellij/config.kdl
 
 zsh_config_dir='.zsh'
 zellij_completion_file="${zsh_config_dir}/completion/_zellij"
-if which zsh >/dev/null && [[ ! -r "${zellij_completion_file}" ]] ; then
+if command -v zsh >/dev/null && [[ ! -r "${zellij_completion_file}" ]] ; then
   # TODO verif don't need mkdir
   zellij setup --generate-completion zsh >"${HOME}/${zellij_completion_file}"
 fi

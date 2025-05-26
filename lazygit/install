@@ -5,7 +5,7 @@ source ../common.sh
 echo "LAZYGIT :"
 if [[ "$CONFIG_ONLY" ]] ; then
   echo ">> config only"  ; [[ "$DRY_RUN" ]] && exit 0
-elif which lazygit >/dev/null ; then
+elif command -v lazygit >/dev/null ; then
   echo ">> already installed" ; [[ "$DRY_RUN" ]] && exit 0
 else 
   # TODO install with apt on ubuntu 25
