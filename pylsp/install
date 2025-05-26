@@ -1,4 +1,5 @@
 #!/bin/bash
+#dep : pipx
 cd "$(dirname "${BASH_SOURCE[0]}")"
 source ../common.sh
 
@@ -10,10 +11,9 @@ elif which pylsp>/dev/null ; then
   echo ">> already installed" ; [[ "$DRY_RUN" ]] && exit 0
 else 
   echo ">> installing... (SUDO)" ; [[ "$DRY_RUN" ]] && exit 0
-  sudo apt-get install -y pipx
   pipx install python-lsp-server
   pipx inject python-lsp-server python-lsp-ruff
+  ln -sf ~/.local/share/pipx/venvs/python-lsp-server/bin/ruff ~/.local/bin/ruff
 fi
 
-ln -sf ~/.local/share/pipx/venvs/python-lsp-server/bin/ruff ~/.local/bin/ruff
 install_config ruff.toml .config/ruff/ruff.toml
