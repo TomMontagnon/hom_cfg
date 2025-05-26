@@ -6,11 +6,11 @@ source ../common.sh
 
 echo "ZELLIJ :"
 if [[ "$CONFIG_ONLY" ]] ; then
-  echo ">> config only" ; [[ "$DRY_RUN" ]] && exit 0
+  echo ">> config only" ; [[ -z "$DRY_RUN" ]] || exit 0
 elif command -v zellij >/dev/null ; then
-  echo ">> already installed" ; [[ "$DRY_RUN" ]] && exit 0
+  echo ">> already installed" ; [[ -z "$DRY_RUN" ]] || exit 0
 else 
-  echo ">> installing..." ; [[ "$DRY_RUN" ]] && exit 0
+  echo ">> installing..." ; [[ -z "$DRY_RUN" ]] || exit 0
   cargo install --locked zellij
 fi
 

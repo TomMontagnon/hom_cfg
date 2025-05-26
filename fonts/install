@@ -16,7 +16,7 @@ download() {
 
   [[ -d "$dest_dir" ]] && return
 
-  echo "  download fonts: ${name}" ; [[ "$DRY_RUN" ]] && return
+  echo "  download fonts: ${name}" ; [[ -z "$DRY_RUN" ]] || return
   pushd /tmp >/dev/null
   wget -q "${nerdfonts_url}/${name}.tar.xz"
   mkdir -p "$dest_dir"
@@ -25,5 +25,5 @@ download() {
 }
 
 download Hack
-[[ "$DRY_RUN" ]] && exit 0
+[[ -z "$DRY_RUN" ]] || exit 0
 fc-cache

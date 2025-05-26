@@ -3,6 +3,7 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 source common.sh
 
 set -e
+set -x
 
 ignore_list=(".git" "template" "tmux")
 
@@ -96,9 +97,10 @@ init_topo_sort
 echo ""
 [[ "$DRY_RUN" ]] && echo "======= DRY RUN =======" || echo "======= INSTALL ======="
 
+echo "${install_order[@]}"
 # Exécuter les scripts dans le bon ordre
 for dir in "${install_order[@]}"; do
-    (cd "$dir" && chmod +x install && ./install -b "$BACKUP_DIR" "${ARGS[@]}")
+    (cd "$dir" && chmod +x install && ./install -b "$BACKUP_DIR" "${ARGS[@]}" || echo "UNTREATED ERROR")
 done
 
 

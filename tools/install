@@ -6,42 +6,42 @@ source ../common.sh
 echo "TOOLS :"
 if [[ ! "$CONFIG_ONLY" ]] ; then
   if ! command -v fd >/dev/null ; then (
-    echo "installing fd_find" ; [[ "$DRY_RUN" ]] && exit 0
+    echo "installing fd_find" ; [[ -z "$DRY_RUN" ]] || exit 0
     cargo install fd-find
   ) fi
 
   if ! command -v rg >/dev/null ; then (
-    echo "installing ripgrep" ; [[ "$DRY_RUN" ]] && exit 0
+    echo "installing ripgrep" ; [[ -z "$DRY_RUN" ]] || exit 0
     cargo install ripgrep
   ) fi
   
   if ! command -v bat >/dev/null ; then (
-    echo "installing bat" ; [[ "$DRY_RUN" ]] && exit 0
+    echo "installing bat" ; [[ -z "$DRY_RUN" ]] || exit 0
     cargo install bat
   ) fi
 
   if ! command -v sd >/dev/null ; then (
-    echo "installing sd" ; [[ "$DRY_RUN" ]] && exit 0
+    echo "installing sd" ; [[ -z "$DRY_RUN" ]] || exit 0
     cargo install sd
   ) fi
 
   if ! command -v exa >/dev/null ; then (
-    echo "installing exa" ; [[ "$DRY_RUN" ]] && exit 0
+    echo "installing exa" ; [[ -z "$DRY_RUN" ]] || exit 0
     cargo install exa
   ) fi
   
   if ! command -v jaq >/dev/null ; then (
-    echo "installing jaq" ; [[ "$DRY_RUN" ]] && exit 0
+    echo "installing jaq" ; [[ -z "$DRY_RUN" ]] || exit 0
     cargo install jaq
   ) fi
 
   if ! command -v dua >/dev/null ; then (
-    echo "installing dua" ; [[ "$DRY_RUN" ]] && exit 0
+    echo "installing dua" ; [[ -z "$DRY_RUN" ]] || exit 0
     cargo install dua-cli
   ) fi
 
   if ! command -v bandcommand -v >/dev/null ; then (
-    echo "installing bandcommand -v" ; [[ "$DRY_RUN" ]] && exit 0
+    echo "installing bandcommand -v" ; [[ -z "$DRY_RUN" ]] || exit 0
     cargo install bandcommand -v
     #making it visible from sudoers
     sudo ln -s ~/.cargo/bin/bandcommand -v /usr/local/bin/bandcommand -v 
@@ -49,19 +49,19 @@ if [[ ! "$CONFIG_ONLY" ]] ; then
 
 
   if ! command -v hyperfine >/dev/null ; then (
-    echo "installing hyperfine" ; [[ "$DRY_RUN" ]] && exit 0
+    echo "installing hyperfine" ; [[ -z "$DRY_RUN" ]] || exit 0
     cargo install hyperfine
   ) fi
 
 
   if ! command -v pastel >/dev/null ; then (
-    echo "installing pastel" ; [[ "$DRY_RUN" ]] && exit 0
+    echo "installing pastel" ; [[ -z "$DRY_RUN" ]] || exit 0
     cargo install pastel
   ) fi
 
 
   if ! command -v xsv >/dev/null ; then (
-    echo "installing xsv" ; [[ "$DRY_RUN" ]] && exit 0
+    echo "installing xsv" ; [[ -z "$DRY_RUN" ]] || exit 0
     cargo install xsv
   ) fi
 fi
