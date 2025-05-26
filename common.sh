@@ -6,6 +6,9 @@ Syntax: $0 [OPTION]...
   -b, --backup-dir=PATH   use PATH as backup directory instead of generating one
   -h, --help              print this help
   -c, --config-only       only install config files, no programs
+  -r, --dry-run		  just print echos
+  -d, --desktop-env	  install stuff that need desktop-env too
+  -g, --global-install	  install stuff with sudo
 EOF
   exit 0
 }
@@ -133,18 +136,24 @@ generate_backup_dir() {
   echo "backup dir: $BACKUP_DIR"
 }
 
-options=$(getopt -o hb:c -l help,backup-dir:,config-only -n "$0" -- "$@")
+options=$(getopt -o hb:cdgr -l help,backup-dir:,config-only,desktop-env,global-install,dry-run  -n "$0" -- "$@")
 eval set -- "$options"
 
 ARGS=("$@")
 BACKUP_DIR=
 CONFIG_ONLY=
+IS_DE=
+GLOBAL_INSTALL=
+DRY_RUN=
 
 while true ; do
   case "$1" in
     -h | --help ) print_help ;;
     -b | --backup-dir ) BACKUP_DIR=$2 ; shift 2 ;;
     -c | --config-only ) CONFIG_ONLY=1 ; shift ;;
+    -d | --desktop-env ) IS_DE=1 ; shift ;;
+    -g | --global-install ) GLOBAL_INSTALL=1; shift ;;
+    -r | --dry-run ) DRY_RUN=1; shift ;;
     -- ) shift ; break ;;
     * ) echo >&2 "Error: Unknown option '$1'." ; exit 1 ;;
   esac
@@ -152,4 +161,12 @@ done
 
 if [[ ! "$BACKUP_DIR" ]] ; then
   generate_backup_dir
+fi
+
+DE=
+if [[ ! "IS_DE"	]] ; then
+	case "$XDG_CURRENT_DESKTOP" in
+		*gnome* ) DE=gnome ;;
+		* ) echo "no desk. env. is recognized in XDG_CURRENT_DESKTOP"; exit 1 ;;
+	esac
 fi

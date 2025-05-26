@@ -12,11 +12,11 @@ mkdir -p "$HOME/${zsh_config_dir}/completion"
 
 
 if [[ "$CONFIG_ONLY" ]] ; then
-  echo ">> config only"
+  echo ">> config only" ; [[ ! "$DRY_RUN" ]] && exit 0
 elif which zsh>/dev/null ; then
-  echo ">> already installed"
+  echo ">> already installed" ; [[ ! "$DRY_RUN" ]] && exit 0
 else 
-  echo ">> installing... (SUDO)"
+  echo ">> installing... (SUDO)" ; [[ ! "$DRY_RUN" ]] && exit 0
   sudo apt-get install -y zsh zsh-syntax-highlighting
 fi
 

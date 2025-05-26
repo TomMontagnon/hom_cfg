@@ -5,7 +5,7 @@ source common.sh
 
 set -e
 
-ignore_list=(".git" "test1" "tmux")
+ignore_list=(".git" "template" "tmux")
 
 is_ignored() {
     local target="$1"
@@ -21,6 +21,8 @@ declare -A dependencies
 declare -A visited
 install_order=()
 
+echo ""
+echo "======= DEPENDANCIES ======="
 for dir in * ; do
     is_ignored "$dir" && continue
     
@@ -57,6 +59,10 @@ topo_sort() {
     visited[$dir]="permanent"
     install_order+=("$dir")
 }
+
+echo ""
+[[ ! "$DRY_RUN" ]] && echo "======= DRY RUN =======" || echo "======= INSTALL ======="
+
 
 # Trier tous les scripts en respectant les dépendances
 for dir in "${!dependencies[@]}"; do

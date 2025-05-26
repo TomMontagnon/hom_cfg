@@ -4,11 +4,11 @@ source ../common.sh
 
 echo "CARGO :"
 if [[ "$CONFIG_ONLY" ]] ; then
-  echo ">> config only"
+  echo ">> config only" ; [[ ! "$DRY_RUN" ]] && exit 0
 elif which cargo >/dev/null ; then
-  echo ">> already installed"
+  echo ">> already installed" ; [[ ! "$DRY_RUN" ]] && exit 0
 else 
-  echo ">> installing..."
+  echo ">> installing..." ; [[ ! "$DRY_RUN" ]] && exit 0
   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 fi
 
