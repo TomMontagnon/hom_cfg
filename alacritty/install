@@ -11,7 +11,8 @@ if [[ "$CONFIG_ONLY" ]] ; then
 elif command -v alacritty >/dev/null ; then
   echo ">> already installed" ; [[ -z "$DRY_RUN" ]] || exit 0
 else 
-  echo ">> installing..." ; [[ -z "$DRY_RUN" ]] || exit 0
+  echo ">> installing... (SUDO)" ; [[ -z "$DRY_RUN" ]] || exit 0
+  sudo apt install libfontconfig1-dev
   cargo install alacritty
 fi
 

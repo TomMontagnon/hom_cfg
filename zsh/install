@@ -20,7 +20,7 @@ else
   sudo apt-get install -y zsh zsh-syntax-highlighting
 fi
 
-
+chsh -s /bin/zsh
 install_config zshrc .zshrc
 install_config zshenv .zshenv
 install_config cfg "${zsh_config_dir}/cfg"

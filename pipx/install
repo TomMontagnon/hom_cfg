@@ -12,5 +12,6 @@ else
   echo ">> installing... " ; [[ -z "$DRY_RUN" ]] || exit 0
   sudo apt-get install -y pipx
   pipx ensurepath
+  source $HOME/.bashrc
 fi
 

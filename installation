@@ -3,7 +3,6 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 source common.sh
 
 set -e
-set -x
 
 ignore_list=(".git" "template" "tmux")
 
@@ -100,7 +99,7 @@ echo ""
 echo "${install_order[@]}"
 # Exécuter les scripts dans le bon ordre
 for dir in "${install_order[@]}"; do
-    (cd "$dir" && chmod +x install && ./install -b "$BACKUP_DIR" "${ARGS[@]}" || echo "UNTREATED ERROR")
+    (cd "$dir" && chmod +x install && source ./install -b "$BACKUP_DIR" "${ARGS[@]}" || echo "UNTREATED ERROR")
 done
 
 

@@ -40,11 +40,11 @@ if [[ ! "$CONFIG_ONLY" ]] ; then
     cargo install dua-cli
   ) fi
 
-  if ! command -v bandcommand -v >/dev/null ; then (
-    echo "installing bandcommand -v" ; [[ -z "$DRY_RUN" ]] || exit 0
-    cargo install bandcommand -v
+  if ! command -v bandwhich >/dev/null ; then (
+    echo "installing bandwhich" ; [[ -z "$DRY_RUN" ]] || exit 0
+    cargo install bandwhich
     #making it visible from sudoers
-    sudo ln -s ~/.cargo/bin/bandcommand -v /usr/local/bin/bandcommand -v 
+    sudo ln -s ~/.cargo/bin/bandwhich /usr/local/bin/bandwhich 
   ) fi
 
 
