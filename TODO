@@ -1,0 +1,7 @@
+remove vi when hx install
+not same command with alacritty and add gnome shortcut
+test source trick to validate pipx and cargo bashrc source
+test DRY_RUN trick to avoid error on return
+
+loginlogout for shell update
+ loginlogout for default terminal from alacrity ?
