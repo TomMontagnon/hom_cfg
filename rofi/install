@@ -13,6 +13,12 @@ else
   sudo apt-get install -y rofi
 fi
 
-add_gnome_shortcut "Lancer Rofi" "rofi -show run" "<Super>x"
+case "$DE" in
+  gnome)
+    add_gnome_shortcut "Lancer Rofi" "rofi -show run" "<Super>x"
+    ;;&
+  *) #FOR ALL
+    ;;
+esac
 
 install_config config.rasi .config/rofi/config.rasi
