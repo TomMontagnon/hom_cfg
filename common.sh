@@ -165,7 +165,7 @@ fi
 
 DE=
 shopt -s nocasematch
-if [[ "ENABLE_DE" ]] ; then
+if [[ "$ENABLE_DE" ]] ; then
 	case "$XDG_CURRENT_DESKTOP" in
 		*gnome* ) DE=gnome ;;
 		* ) DE=unknown ;;

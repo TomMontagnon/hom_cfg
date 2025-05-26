@@ -5,7 +5,6 @@ source common.sh
 set -e
 
 ignore_list=(".git" "template" "tmux")
-#ignore_list=(.git alacritty cargo  common.sh  fonts  fzf  git  helix  installation  installation.bash  lazygit  pylsp  readme.md  rofi  starship  template  tmux  tools  zellij zsh)
 
 is_ignored() {
     local target="$1"
