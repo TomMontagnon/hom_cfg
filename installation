@@ -2,10 +2,10 @@
 cd "$(dirname "${BASH_SOURCE[0]}")"
 source common.sh
 
-
 set -e
 
 ignore_list=(".git" "template" "tmux")
+#ignore_list=(.git alacritty cargo  common.sh  fonts  fzf  git  helix  installation  installation.bash  lazygit  pylsp  readme.md  rofi  starship  template  tmux  tools  zellij zsh)
 
 is_ignored() {
     local target="$1"
@@ -17,60 +17,90 @@ is_ignored() {
     return 1
 }
 
-declare -A dependencies
-declare -A visited
-install_order=()
-
-echo ""
-echo "======= DEPENDANCIES ======="
-for dir in * ; do
-    is_ignored "$dir" && continue
-    
-    [ -f "$dir/install" ] || continue
-    line=$(grep '^#dep : ' "$dir/install" || true)
-    deps=()
-    if [[ -n "$line" ]]; then
-        deps=(${line#"#dep : "})
-    fi
-    dependencies["$dir"]="${deps[*]}"
-    echo "dir : $dir | dep = ${deps[*]}"
-done
+load_dep() {
+	for dir in * ; do
+	    is_ignored "$dir" && continue
+	    
+	    [ -f "$dir/install" ] || continue
+	    line=$(grep '^#dep : ' "$dir/install" || true)
+	    deps=()
+	    if [[ -n "$line" ]]; then
+	        deps=(${line#"#dep : "})
+	    fi
+	    dependencies["$dir"]="${deps[*]}"
+	    echo "dir : $dir | dep = ${deps[*]}"
+	done
+}
 
 topo_sort() {
     local dir="$1"
 
-    if [[ "${visited[$dir]}" == "permanent" ]]; then
-        return
-    elif [[ "${visited[$dir]}" == "temporary" ]]; then
+    if [[ "${visited[$dir]}" == "cut" ]]; then
+        return 1
+    fi
+    # Ne pas re-traiter les paquets déjà validés
+    if [[ "${visited[$dir]}" == "perm" ]]; then
+        return 0
+    fi
+    # Détection du cycle
+    if [[ "${visited[$dir]}" == "temp" ]]; then
         echo "Cycle détecté impliquant $dir" >&2
         exit 1
     fi
 
-    visited[$dir]="temporary"
+    visited[$dir]="temp"
+
+    # Dépendance inconnue (clé absente)
+    if [[ ! -v dependencies[$dir] ]]; then
+	echo "Dépendances non renseignées (n'existe pas) : $dir"
+	visited[$dir]="cut"
+        return 1
+    fi
 
     for dep in ${dependencies[$dir]}; do
-        if [[ ! -v dependencies[$dep] ]]; then
-            echo "Dépendance inconnue : $dep requise par $dir" >&2
-            exit 1
-        fi
-        topo_sort "$dep"
+        # Appel récursif : si une dépendance échoue, on arrête
+        if ! topo_sort "$dep" ; then
+		visited[$dir]="cut"
+		return 1
+	fi
     done
 
-    visited[$dir]="permanent"
+    visited[$dir]="perm"
     install_order+=("$dir")
+    return 0
 }
 
+init_topo_sort(){
+	declare -A visited
+	for dir in "${!dependencies[@]}"; do
+	    if [[ ! -v "${visited[$dir]}" ]]; then
+	    	topo_sort "$dir" || echo "[ERREUR pour $dir]"
+	    fi
+	done
+}
+
+
+
+
+
+[[ "$ENABLE_DE" ]] && ( mkdir de ; echo "echo \"DE :\"" >> de/install ; echo "echo \">> $DE installation enabled\"" >> de/install) 
+
 echo ""
-[[ ! "$DRY_RUN" ]] && echo "======= DRY RUN =======" || echo "======= INSTALL ======="
+echo "======= DEPENDANCIES ======="
 
+declare -A dependencies
+load_dep
 
-# Trier tous les scripts en respectant les dépendances
-for dir in "${!dependencies[@]}"; do
-    topo_sort "$dir"
-done
+declare -a install_order
+init_topo_sort
+
+echo ""
+[[ "$DRY_RUN" ]] && echo "======= DRY RUN =======" || echo "======= INSTALL ======="
 
 # Exécuter les scripts dans le bon ordre
 for dir in "${install_order[@]}"; do
-    #echo "Installation de $dir..."
     (cd "$dir" && chmod +x install && ./install -b "$BACKUP_DIR" "${ARGS[@]}")
 done
+
+
+[[ "$ENABLE_DE" ]] && rm -r de 

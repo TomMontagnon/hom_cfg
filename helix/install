@@ -4,11 +4,11 @@ source ../common.sh
 
 echo "HELIX :"
 if [[ "$CONFIG_ONLY" ]] ; then
-  echo ">> config only" ; [[ ! "$DRY_RUN" ]] && exit 0
+  echo ">> config only" ; [[ "$DRY_RUN" ]] && exit 0
 elif which hx >/dev/null ; then
-  echo ">> already installed" ; [[ ! "$DRY_RUN" ]] && exit 0
+  echo ">> already installed" ; [[ "$DRY_RUN" ]] && exit 0
 else 
-  echo ">> installing... (SUDO)" ; [[ ! "$DRY_RUN" ]] && exit 0
+  echo ">> installing... (SUDO)" ; [[ "$DRY_RUN" ]] && exit 0
   sudo add-apt-repository ppa:maveonair/helix-editor
   sudo apt-get install -y helix
 fi

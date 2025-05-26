@@ -4,12 +4,12 @@ source ../common.sh
 
 echo "LAZYGIT :"
 if [[ "$CONFIG_ONLY" ]] ; then
-  echo ">> config only"  ; [[ ! "$DRY_RUN" ]] && exit 0
+  echo ">> config only"  ; [[ "$DRY_RUN" ]] && exit 0
 elif which lazygit >/dev/null ; then
-  echo ">> already installed" ; [[ ! "$DRY_RUN" ]] && exit 0
+  echo ">> already installed" ; [[ "$DRY_RUN" ]] && exit 0
 else 
   # TODO install with apt on ubuntu 25
-  echo ">> installing... (SUDO)" ; [[ ! "$DRY_RUN" ]] && exit 0
+  echo ">> installing... (SUDO)" ; [[ "$DRY_RUN" ]] && exit 0
   LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | \grep -Po '"tag_name": *"v\K[^"]*')
   curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
   tar xf lazygit.tar.gz lazygit

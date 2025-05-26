@@ -12,11 +12,11 @@ source ../common.sh
 
 echo "GIT :"
 if [[ "$CONFIG_ONLY" ]] ; then
-  echo ">> config only" ; [[ ! "$DRY_RUN" ]] && exit 0
+  echo ">> config only" ; [[ "$DRY_RUN" ]] && exit 0
 elif which git >/dev/null ; then
-  echo ">> already installed" ; [[ ! "$DRY_RUN" ]] && exit 0
+  echo ">> already installed" ; [[ "$DRY_RUN" ]] && exit 0
 else 
-  echo ">> installing... (SUDO)" ; [[ ! "$DRY_RUN" ]] && exit 0
+  echo ">> installing... (SUDO)" ; [[ "$DRY_RUN" ]] && exit 0
   sudo apt-get install -y git
 fi
 

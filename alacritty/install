@@ -1,5 +1,5 @@
 #!/bin/bash
-#dep : cargo
+#dep : cargo de
 cd "$(dirname "${BASH_SOURCE[0]}")"
 source ../common.sh
 
@@ -7,11 +7,11 @@ source ../common.sh
 
 echo "ALACRITTY :"
 if [[ "$CONFIG_ONLY" ]] ; then
-  echo ">> config only" ; [[ ! "$DRY_RUN" ]] && exit 0
+  echo ">> config only" ; [[ "$DRY_RUN" ]] && exit 0
 elif which alacritty >/dev/null ; then
-  echo ">> already installed" ; [[ ! "$DRY_RUN" ]] && exit 0
+  echo ">> already installed" ; [[ "$DRY_RUN" ]] && exit 0
 else 
-  echo ">> installing..." ; [[ ! "$DRY_RUN" ]] && exit 0
+  echo ">> installing..." ; [[ "$DRY_RUN" ]] && exit 0
   cargo install alacritty
 fi
 
@@ -21,7 +21,7 @@ case "$DE" in
     gsettings set org.gnome.desktop.default-applications.terminal exec 'alacritty'
     gsettings set org.gnome.desktop.default-applications.terminal exec-arg ''
     ;;&
-  *)
+  *) #FOR ALL
     install_config alacritty.desktop .local/share/applications/alacritty.desktop
     mkdir -p .local/share/icons/
     wget https://github.com/alacritty/alacritty/raw/master/extra/logo/alacritty-term.svg -O ~/.local/share/icons/alacritty.svg
