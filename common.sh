@@ -105,6 +105,21 @@ add_gnome_shortcut() {
 }
 
 
+find_dependents() {
+    local target="$1"
+    for dir in "${!dependencies[@]}"; do
+        for dep in ${dependencies[$dir]}; do
+            if [[ "$dep" == "$target" ]]; then
+                if [[ -z "${marked_for_removal[$dir]}" ]]; then
+                    marked_for_removal["$dir"]=1
+                    find_dependents "$dir"
+                fi
+            fi
+        done
+    done
+}
+
+
 install_config() {
   local path_dest="$HOME/$2"
   local create_link='false'
