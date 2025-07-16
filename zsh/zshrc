@@ -34,9 +34,10 @@ setopt prompt_subst          # enable some expansions in prompt
 setopt extended_glob         # treat the `#', `~' and `^' characters as part of patterns
 setopt auto_list             # list choices on  an ambiguous completion
 
-setopt append_history        # parallel zsh share new entries from history
-setopt share_history         # import new commands from the history file
-setopt inc_append_history    # Append history immediately
+setopt append_history        # append to history file rather than replace it
+# setopt share_history         # import new commands from history file synced + append typed ones to history file (like inc_append_history) + add time_stamp
+setopt inc_append_history    # Append to history file immediately
+setopt extented_history      # Add time stamp
 setopt bang_hist             # perform textual history expansion (!!, !123, !git)
 setopt hist_fcntl_lock       # lock on history file done with fctnl syscall
 setopt hist_find_no_dups     # no duplicates (even not contiguous) when searching for history entries 
